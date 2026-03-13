@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'cbv.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'apoio',
+        'USER': 'admin',
+        'PASSWORD': 'ktXhFar28lxvQCJ0MHj94Rn6FNMmcDWe',
+        'HOST': 'postgresql://admin:ktXhFar28lxvQCJ0MHj94Rn6FNMmcDWe@dpg-d6q5fanafjfc73c9rgg0-a/apoio',  
+        'PORT': '5432',      
     }
 }
 
