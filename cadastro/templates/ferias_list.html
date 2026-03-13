@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Férias{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Férias</h3>
+  <div>
+    <a href="{% url 'ferias-create' %}" class="btn btn-primary">Nova Férias</a>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Colaborador</th>
+            <th>Início de Férias</th>
+            <th>Final de Férias</th>
+            <th>Limite para Tirar Férias</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obj in ferias %}
+            <tr>
+              <td>{{ obj.nome.nome }}</td>
+              <td>{{ obj.inicio_gozo|default:'—' }}</td>
+              <td>{{ obj.fim_gozo|default:'—' }}</td>
+              <td>{{ obj.limite_gozo|default:'—' }}</td>
+              <td class="text-end">
+                <a href="{% url 'ferias-update' obj.pk %}" class="btn btn-sm btn-outline-primary me-1">Editar</a>
+                <a href="{% url 'ferias-delete' obj.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="text-center py-4">Nenhuma férias encontrada.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Prestador{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-body p-lg-5">
+                <h2 class="card-title text-center fw-bold mb-4">Editar Prestador</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-floating mb-3">
+                        {{ field }}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="{% url 'prestadores_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        <div>
+                            <a href="{% url 'prestador_delete' pk=form.instance.id %}" class="btn btn-danger me-2">Excluir</a>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load highlight %}
+
+{% block title %}Lista de Pessoas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Pessoas</h1>
+    <div>
+        <a href="/cadastro" class="btn btn-outline-secondary me-2">Novo</a>
+        <a href="/faltas/create/" class="btn btn-primary">Registrar Falta</a>
+    </div>
+</div>
+
+{% if pessoas %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 pessoas-list">
+    {% for pessoa in pessoas %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-end border border-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title mb-1">{{ pessoa.nome|default:'—'|highlight:q }}</h5>
+                        <p class="text-muted mb-1">{{ pessoa.funcao|default:'—'|highlight:q }}</p>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted">Admissão</small>
+                        <div>{{ pessoa.data_admissao|default:'—'|date:'d/m/Y' }}</div>
+                    </div>
+                </div>
+
+                <p class="mt-3 mb-1">Endereço: <span class="text-muted">{{ pessoa.endereco|default:'—' }}</span></p>
+                <p class="mb-0">Documento: <span class="text-muted">{{ pessoa.documento|default:'—'|highlight:q }}</span></p>
+            </div>
+            <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                <a href="{% url 'pessoa_update' pk=pessoa.id %}" class="btn btn-sm btn-outline-primary me-2">Ver</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4" aria-label="Páginas">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">Anterior</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+    {% endif %}
+
+    {% for num in paginator.page_range %}
+      {% if page_obj.number == num %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if q %}&q={{ q }}{% endif %}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}">Próximo</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Próximo</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+{% else %}
+    <div class="text-center py-5">
+        <h4 class="text-muted">Nenhuma pessoa cadastrada.</h4>
+        <p class="text-muted">Use o botão "Novo" para cadastrar uma pessoa.</p>
+    </div>
+{% endif %}
+
+{% endblock %}

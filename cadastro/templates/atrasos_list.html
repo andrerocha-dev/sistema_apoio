@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="display-6"><i class="bi bi-clock-history me-2"></i>Controle de Atrasos</h2>
+            <p class="text-muted">Gerencie os registros de atrasos dos colaboradores.</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'atrasos_create' %}" class="btn btn-primary btn-lg shadow-sm">
+                <i class="bi bi-plus-lg"></i> Novo Atraso
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="ps-4">Colaborador</th>
+                            <th scope="col">Data do Atraso</th>
+                            <th scope="col">Horário do Atraso</th>
+                            <th scope="col" class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for atraso in atrasos %}
+                        <tr>
+                            <td class="ps-4 fw-bold text-secondary">{{ atraso.nome }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    {{ atraso.data_atraso|date:"d/m/Y" }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    {{ atraso.horario }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'atrasos_update' atraso.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                        <i class="bi bi-pencil-square"></i> Editar
+                                    </a>
+                                    <a href="{% url 'atrasos_delete' atraso.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir">
+                                        <i class="bi bi-trash"></i> Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center py-5 text-muted">
+                                Nenhuns atraso registrado.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

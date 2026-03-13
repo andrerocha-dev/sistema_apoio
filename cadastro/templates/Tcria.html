@@ -1,0 +1,14 @@
+<htlml>
+    <head>
+        <title>Cadastro de Funcionário</title>
+    </head>
+    <body>
+        <h1>Cadastro de Funcionário</h1>
+        {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Cadastrar</button>
+        </form>
+    </body>
+</htlml>
