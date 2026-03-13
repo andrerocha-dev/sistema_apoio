@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'cbv.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'apoiodb',
+        'NAME': 'apoiodb_gwrp',
         'USER': 'andre',
-        'PASSWORD': 'GDcObMTwtjzZ1VOxh1WjR6H3NTfP0OQ2',
-        'HOST': 'postgresql://andre:GDcObMTwtjzZ1VOxh1WjR6H3NTfP0OQ2@dpg-d6q97bfpm1nc73aue0a0-a/apoiodb',  
+        'PASSWORD': 'xMYOYznZlIw8xovzxp07KesJ8o66q9sG',
+        'HOST': 'postgresql://andre:xMYOYznZlIw8xovzxp07KesJ8o66q9sG@dpg-d6q9e8f5r7bs738d01r0-a/apoiodb_gwrp',  
         'PORT': '5432',      
     }
 }
