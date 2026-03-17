@@ -1,0 +1,6 @@
+waitress-serve --port=8080 cbv.wsgi:application
+python manage.py runserver                  
+python manage.py createsupereuser
+django-admin startproject 
+python manage.py startapp
+pip install -r .\requirements.txt

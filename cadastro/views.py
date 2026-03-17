@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView
+
+from usuario.models import Usuario
 from .forms import PessoaForm, FaltasForm, PrestadorForm, AtrasosForm, FeriasForm
 from .models import Pessoa, Faltas, Prestador, Atrasos, Ferias, CustoParceiros
 from django.urls import reverse_lazy
@@ -24,6 +26,7 @@ class IndexTemplateView(TemplateView):
         context['count_atrasos'] = Atrasos.objects.count()
         context['count_ferias'] = Ferias.objects.count()
         context['count_custos'] = CustoParceiros.objects.count()
+        context['count_usuarios'] = Usuario.objects.count()
         return context
 
 # ===========================FALTAS================================

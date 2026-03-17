@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-g77d4ypk34!11%7na9zrb-rz#t@f6ed)+jgu9ux%mu@7afoehu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sistema-apoio.onrender.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cadastro'
+    'cadastro',
+    'usuario',
 ]
 
 MIDDLEWARE = [
@@ -77,12 +78,8 @@ WSGI_APPLICATION = 'cbv.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'apoiodb_gwrp',
-        'USER': 'andre',
-        'PASSWORD': 'xMYOYznZlIw8xovzxp07KesJ8o66q9sG',
-        'HOST': 'dpg-d6q9e8f5r7bs738d01r0-a', 
-        'PORT': '5432',      
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -121,10 +118,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
 STATIC_ROOT = os.path.join('static')
-#STATIC_ROOT = '/templates/static'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

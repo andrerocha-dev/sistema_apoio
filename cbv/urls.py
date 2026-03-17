@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 # IMPORTA A CLASSE DE VIEW
 from cadastro.views import IndexTemplateView, PessoaCreateView, FaltasListView, FaltasCreateView, PessoaListView, PessoaUpdateView, PessoaDeleteView, PrestadorCreateView, PrestadorListView, PrestadorUpdateView, PrestadorDeleteView, AtrasosListView, AtrasosCreateView, AtrasosUpdateView, AtrasosDeleteView, FeriasListView, FeriasCreateView, FeriasUpdateView, FeriasDeleteView, CustoParceirosListView, CustoParceirosCreateView, CustoParceirosUpdateView, CustoParceirosDeleteView
@@ -65,5 +65,8 @@ urlpatterns = [
      path('custoparceiros/create/', CustoParceirosCreateView.as_view(), name='custoparceiros-create'),
      path('custoparceiros/<int:pk>/edit/', CustoParceirosUpdateView.as_view(), name='custoparceiros-update'),
      path('custoparceiros/<int:pk>/delete/', CustoParceirosDeleteView.as_view(), name='custoparceiros-delete'),
+     
+     # Rota para cadastro de usuário
+     path('usuarios/', include('usuario.urls')),
          
 ]
