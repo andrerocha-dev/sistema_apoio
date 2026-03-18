@@ -4,3 +4,61 @@ python manage.py createsupereuser
 django-admin startproject 
 python manage.py startapp
 pip install -r .\requirements.txt
+
+########## Gerenciamento de Contêineres docker ##############
+
+------Criar um conteiner docker------
+docker run -d -p <porta local>:<porta do conteiner> <nome do conteiner> <nome da imagem>
+
+------Lista os contêineres em execução-----
+docker ps
+
+------Lista todos os contêineres (incluindo os parados)-------
+docker ps -a
+
+-------Para um contêiner em execução----------
+docker stop <container>
+
+------- Inicia um contêiner parado------------
+docker start <conteiner>
+
+--------Remove um contêiner-------------------
+docker rm <conteiner>
+
+--------Executa um comando dentro de um contêiner ativo---------
+docker exec -it <contêiner> <comando>
+
+--------Exibe os logs de um contêiner--------------
+docker logs <contêiner>
+
+################## Gerenciamento de Imagens #########################
+
+--------Baixa uma imagem do Docker Hub-------------
+docker pull <imagem>
+
+------- Lista as imagens disponíveis localmente----------
+docker images
+
+-------- Remove uma imagem local------------
+docker rmi <imagem>
+
+---------Constrói uma imagem a partir de um Dockerfile no diretório atual-----------
+docker build -t <nome> .
+
+########### Informações e Limpeza #############
+
+--------- Mostra informações detalhadas sobre contêineres ou imagens---------
+docker inspect <objeto>
+
+--------Exibe uso de CPU e memória em tempo real---------------
+docker stats
+
+--------Remove contêineres parados, redes não utilizadas e imagens "dangling" para liberar espaço---------
+docker system prune
+
+############ Exemplos Comuns #############
+------Inicia o Nginx em segundo plano (-d), nomeia-o e mapeia a porta 8080.--------
+docker run -d --name meu-nginx -p 8080:80 nginx
+
+------Executa um contêiner de teste e o remove automaticamente ao finalizar--------
+docker run --rm hello-world
