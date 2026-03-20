@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'apoiodb_gwrp',
         'USER': 'andre',
         'PASSWORD': 'xMYOYznZlIw8xovzxp07KesJ8o66q9sG',
-        'HOST': 'xMYOYznZlIw8xovzxp07KesJ8o66q9sG@dpg-d6q9e8f5r7bs738d01r0-a/apoiodb_gwrp',
+        'HOST': 'dpg-d6q9e8f5r7bs738d01r0-a',
         'PORT':'5432',
     }
 }
