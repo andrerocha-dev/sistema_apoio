@@ -47,7 +47,7 @@ class UsuarioUpdate(forms.ModelForm):
             'login': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': ' '}),
             'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
-            'senha': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' '}),
+            'senha': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' ',}),
         }
 
         def clean_senha(self):
@@ -62,5 +62,13 @@ class UsuarioUpdate(forms.ModelForm):
                 raise forms.ValidationError(
                     "O nome deve ter pelo menos 3 caracteres.")
             return nome
+        
+        def clean_email(self):
+            email = self.cleaned_data.get('email')
+            if Usuario.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("Este email já está em uso.")  
+            return email 
+        
+        
 
     
