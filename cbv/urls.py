@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
 
 # IMPORTA A CLASSE DE VIEW
@@ -25,9 +26,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # RENDERIZAR A PÁGINA INICIAL
-    path('', IndexTemplateView.as_view(), name='index'),
+    path("", lambda request: redirect('/usuarios/login/')),
+    
+    
     
     # Rotas para Pessoas
+    path('cadastro/index', IndexTemplateView.as_view(), name='index'),
     path('cadastro', PessoaCreateView.as_view(), name='cadastro'),
     path('faltas/', FaltasListView.as_view(), name='faltas_list'),
     path('faltas/create/', FaltasCreateView.as_view(), name='faltas_create'),
