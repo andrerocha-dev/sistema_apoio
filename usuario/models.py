@@ -15,8 +15,9 @@ class Base(models.Model):
 class Usuario(Base):
     nome = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
+    login = models.CharField(max_length=255, unique=True, default='') 
     senha = models.CharField(max_length=255)
-    
+     
     class Meta:
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
