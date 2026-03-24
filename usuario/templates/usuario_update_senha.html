@@ -8,22 +8,24 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h1 class="card-title text-center mb-4">Atualizar Usuário</h1>
+                    <h1 class="card-title text-center mb-4">Atualizar Senha</h1>
                     <form method="post">
                         {% csrf_token %}
-                       {{ form.as_p }}
+                        {{ form.as_p }}
 
                         <div>
                             <br>
-                        </div>
-                        
+                        </div
+
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
+
                         <div><br></div>
                         <div class="d-grid">
                             <a href="{% url 'usuario_list' %}" class="btn btn-danger">Cancelar</a>
                         </div>
+                       
                     </form>
                 </div>
             </div>

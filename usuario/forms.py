@@ -33,7 +33,7 @@ class UsuarioForm(forms.ModelForm):
         return login
 
     def clean_senha(self):
-        senha = self.cleaned_data.get('senha')
+        senha = self.cleaned_data.get('senha').strip()
         if len(senha) < 8:
             raise forms.ValidationError("A senha deve ter pelo menos 8 caracteres.")
         return senha
@@ -42,19 +42,13 @@ class UsuarioForm(forms.ModelForm):
 class UsuarioUpdate(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ['nome', 'email', 'senha', 'login']
+        fields = ['nome', 'email', 'login']
         widgets = {
             'login': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': ' '}),
             'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
-            'senha': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' ',}),
+            
         }
-
-        def clean_senha(self):
-            senha = self.cleaned_data.get('senha')
-            if len(senha) < 8:
-                raise forms.ValidationError("A senha deve ter pelo menos 8 caracteres.")
-            return senha
 
         def clean_nome(self):
             nome = self.cleaned_data.get('nome')
@@ -69,6 +63,26 @@ class UsuarioUpdate(forms.ModelForm):
                 raise forms.ValidationError("Este email já está em uso.")  
             return email 
         
+class UpdateSenha(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nome','senha']
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
+            'senha': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' '}),
+        }
         
+    def clean_nome(self):
+        nome = self.cleaned_data.get('nome')
+        if Usuario.objects.filter(nome=nome).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Este nome já está em uso.")
+        return nome    
 
+    def clean_senha(self):
+        senha = self.cleaned_data.get('senha').strip()
+        if len(senha) < 8:
+            raise forms.ValidationError("A senha deve ter pelo menos 8 caracteres.")
+        return senha
+    
+    
     

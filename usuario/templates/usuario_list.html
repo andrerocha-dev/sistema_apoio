@@ -24,7 +24,9 @@
                     <td>{{ usuario.nome }}</td>
                     <td>{{ usuario.email }}</td>
                     <td>{{ usuario.login }}</td>
+                    
                     <td>
+                        <a href="{% url 'usuario_update_senha' usuario.pk %}" class="btn btn-sm btn-info">Alterar Senha</a>
                         <a href="{% url 'usuario_update' usuario.pk %}" class="btn btn-sm btn-primary">Editar</a>
                         <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-sm btn-danger">Excluir</a>
                     </td>
