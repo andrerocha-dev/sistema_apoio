@@ -1,0 +1,59 @@
+Controla de Obras
+===============================
+Por Estados
+Nome(FK)
+Modelo da catraca(Charfield)
+Ticket (número)
+Base (boolean)
+Facial (boolean)
+webcam (boolean)
+Ativação (datefield)
+NF-E (número)
+
+============================
+
+Processo de implantação
+Nome(FK)
+Status(Choice - Equipamento Entregue - Aguardando Cliente - Pendente Fechamento - Aguardando Cliente - Envio Autorizado - Aguardando Aprovação)
+Modelo da catraca(Charfield)
+Ticket(Numero)
+Base(boolean)
+webcam(boolean)
+Ativação(datefield)
+nfe(numero)
+informações(TextField)
+
+
+class Base(models.Model):
+    criados = models.DateField('Criação', auto_now_add=True)
+    modificado = models.DateField('Atualização', auto_now=True)
+    ativo = models.BooleanField(default=True )
+
+    class Meta:
+        abstract = True
+
+
+class Status(Base):
+    # Definindo as opções (Choices)
+    STATUS_CHOICES = [
+        ('equipamento_entregue', 'Equipamento Entregue'),
+        ('aguardando_cliente', 'Aguardando Cliente'),
+        ('pendente_fechamento', 'Pendente Fechamento'),
+        ('envio_autorizado', 'Envio Autorizado'),
+        ('aguardando_aprovacao', 'Aguardando Aprovação'),
+    ]
+
+    nome = models.CharField(max_length=200)	
+    status = models.CharField('Status',
+        max_length=100,
+        choices=STATUS_CHOICES,
+        default='aguardando_aprovacao',
+    )
+
+    class Meta:
+	verbose_name = 'Status'	
+
+    def __str__(self):
+        return f"{self.nome} - {self.get_status_display()}"
+
+===================================================================
