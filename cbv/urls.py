@@ -19,7 +19,11 @@ from django.shortcuts import redirect
 from django.urls import path, include
 
 # IMPORTA A CLASSE DE VIEW
-from cadastro.views import IndexTemplateView, PessoaCreateView, FaltasListView, FaltasCreateView, PessoaListView, PessoaUpdateView, PessoaDeleteView, PrestadorCreateView, PrestadorListView, PrestadorUpdateView, PrestadorDeleteView, AtrasosListView, AtrasosCreateView, AtrasosUpdateView, AtrasosDeleteView, FeriasListView, FeriasCreateView, FeriasUpdateView, FeriasDeleteView, CustoParceirosListView, CustoParceirosCreateView, CustoParceirosUpdateView, CustoParceirosDeleteView
+from cadastro.views import (IndexTemplateView, PessoaCreateView, FaltasListView, FaltasCreateView, PessoaListView, PessoaUpdateView, 
+                            PessoaDeleteView, PrestadorCreateView, PrestadorListView, PrestadorUpdateView, PrestadorDeleteView, 
+                            AtrasosListView, AtrasosCreateView, AtrasosUpdateView, AtrasosDeleteView, FeriasListView, FeriasCreateView, 
+                            FeriasUpdateView, FeriasDeleteView, CustoParceirosListView, CustoParceirosCreateView, CustoParceirosUpdateView, 
+                            CustoParceirosDeleteView)
 
 
 urlpatterns = [
@@ -72,5 +76,22 @@ urlpatterns = [
      
      # Rota para cadastro de usuário
      path('usuarios/', include('usuario.urls')),
+     
+     # Rota para cadastro de obras
+     path('obras/', include('obra.urls')),
+     
+     # Rota para cadastro de por estado     path('por_estado/', include('obra.urls')),
+     #path('por_estado/', include('obra.urls')),
+     
+     # Rota para cadastro de implantação
+     #path('implantacao/', include('obra.urls')),
+     
+     # Rota para cadastro de obras ativas
+     #path('ativas/', include('obra.urls')),
+     
+     # Rota para cadastro de obras desativadas
+     #path('desativadas/', include('obra.urls')),
+     
+      
          
 ]
