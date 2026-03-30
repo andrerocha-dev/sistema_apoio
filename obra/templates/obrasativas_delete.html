@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Exclusão</h4>
+                </div>
+                <div class="card-body text-center p-5">
+                    <h5 class="card-title text-danger mb-4">Tem certeza que deseja excluir este registro?</h5>
+                    <p class="card-text fs-5 mb-4">
+                        Obra: <strong>{{ object.nome }}</strong><br>
+                        Construtora: <strong>{{ object.construtora }}</strong>
+                        Modelo de Catraca: <strong>{{ object.modelo }}</strong>
+                    </p>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                    
+                    <form method="post" class="d-grid gap-2 col-8 mx-auto mt-4">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg">Sim, Excluir</button>
+                        <a href="{% url 'obrasativas_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

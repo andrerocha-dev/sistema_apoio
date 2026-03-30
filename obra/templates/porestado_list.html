@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for obra in obras %}
+                        {% for obra in porestado %}
                         <tr>
                             <td class="ps-4 fw-bold text-secondary">{{ obra.nome }}</td>
                             <td>
@@ -81,7 +81,7 @@
                                     <a href="{% url 'porestado_update' obra.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
                                         <i class="bi bi-pencil-square"></i> Editar
                                     </a>
-                                    <a href="{% url 'porestado_confirm_delete' obra.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir">
+                                    <a href="{% url 'porestado_delete' obra.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir">
                                         <i class="bi bi-trash"></i> Excluir
                                     </a>
                                 </div>
