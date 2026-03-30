@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView
 
 from usuario.models import Usuario
+from usuario.views import LoginRequiredMixin
 from .forms import PessoaForm, FaltasForm, PrestadorForm, AtrasosForm, FeriasForm
 from .models import Pessoa, Faltas, Prestador, Atrasos, Ferias, CustoParceiros
 from django.urls import reverse_lazy
@@ -15,7 +16,7 @@ from django.db.models import Q
 # Define a view class QUE CHAMA OS TEMPLATES
 
 
-class IndexTemplateView(TemplateView):
+class IndexTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
@@ -32,30 +33,19 @@ class IndexTemplateView(TemplateView):
         if usuario_id:
             context['usuario'] = Usuario.objects.filter(id=usuario_id).first()
         return context
-    
-    # impedir acesso a página se não estiver logado e redirecionar para a página de login
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
+
 
 # ===========================FALTAS================================
 
 
-class FaltasListView(ListView):
+class FaltasListView(LoginRequiredMixin, ListView):
     model = Faltas
     template_name = 'faltas_list.html'
     context_object_name = 'faltas'
     ordering = ['-data_falta']
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class FaltasCreateView(CreateView):
+class FaltasCreateView(LoginRequiredMixin, CreateView):
     model = Faltas
     template_name = 'faltas_create.html'
     form_class = FaltasForm
@@ -64,16 +54,13 @@ class FaltasCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, 'Falta registrada com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 # ============================PESSOAS==================================
 
-#COLABORADORES
-class PessoaCreateView(CreateView):
+# COLABORADORES
+
+
+class PessoaCreateView(LoginRequiredMixin, CreateView):
     model = Pessoa
     template_name = "pessoa_create.html"
     form_class = PessoaForm
@@ -87,14 +74,9 @@ class PessoaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['recent_pessoas'] = Pessoa.objects.order_by('-id')[:5]
         return context
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
 
-class PessoaListView(ListView):
+
+class PessoaListView(LoginRequiredMixin, ListView):
     model = Pessoa
     template_name = 'pessoas_list.html'
     context_object_name = 'pessoas'
@@ -116,14 +98,9 @@ class PessoaListView(ListView):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
         return context
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class PessoaUpdateView(UpdateView):
+class PessoaUpdateView(LoginRequiredMixin, UpdateView):
     model = Pessoa
     template_name = 'pessoa_update.html'
     form_class = PessoaForm
@@ -132,14 +109,9 @@ class PessoaUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Cadastro atualizado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
 
-class PessoaDeleteView(DeleteView):
+
+class PessoaDeleteView(LoginRequiredMixin, DeleteView):
     model = Pessoa
     template_name = 'pessoa_confirm_delete.html'
     success_url = reverse_lazy('pessoas_list')
@@ -147,17 +119,11 @@ class PessoaDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Cadastro excluído com sucesso!')
         return super().delete(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
 
 # ==============================PRESTADOR=============================
 
 
-class PrestadorCreateView(CreateView):
+class PrestadorCreateView(LoginRequiredMixin, CreateView):
     model = Prestador
     template_name = 'prestador_create.html'
     fields = ['nome']
@@ -166,26 +132,16 @@ class PrestadorCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, 'Prestador cadastrado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
 
-class PrestadorListView(ListView):
+
+class PrestadorListView(LoginRequiredMixin, ListView):
     model = Prestador
     template_name = 'prestadores_list.html'
     context_object_name = 'prestadores'
     ordering = ['nome']
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class PrestadorUpdateView(UpdateView):
+class PrestadorUpdateView(LoginRequiredMixin, UpdateView):
     model = Prestador
     template_name = 'prestador_update.html'
     form_class = PrestadorForm
@@ -194,12 +150,9 @@ class PrestadorUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Prestador atualizado com sucesso!')
         return super().form_valid(form)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
-class PrestadorDeleteView(DeleteView):
+
+class PrestadorDeleteView(LoginRequiredMixin, DeleteView):
     model = Prestador
     template_name = 'prestador_confirm_delete.html'
     success_url = reverse_lazy('prestadores_list')
@@ -207,16 +160,10 @@ class PrestadorDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Prestador excluído com sucesso!')
         return super().delete(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-
 # =================================ATRASOS===================================
 
 
-class AtrasosCreateView(CreateView):
+class AtrasosCreateView(LoginRequiredMixin, CreateView):
     model = Atrasos
     template_name = 'atrasos_create.html'
     form_class = AtrasosForm
@@ -225,26 +172,16 @@ class AtrasosCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, 'Atraso registrado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class AtrasosListView(ListView):
+class AtrasosListView(LoginRequiredMixin, ListView):
     model = Atrasos
     template_name = 'atrasos_list.html'
     context_object_name = 'atrasos'
     ordering = ['-data_atraso']
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class AtrasosUpdateView(UpdateView):
+class AtrasosUpdateView(LoginRequiredMixin, UpdateView):
     model = Atrasos
     template_name = 'atrasos_update.html'
     form_class = AtrasosForm
@@ -253,14 +190,9 @@ class AtrasosUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Atraso atualizado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class AtrasosDeleteView(DeleteView):
+class AtrasosDeleteView(LoginRequiredMixin, DeleteView):
     model = Atrasos
     template_name = 'atrasos_confirm_delete.html'
     success_url = reverse_lazy('atrasos_list')
@@ -268,17 +200,11 @@ class AtrasosDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Atraso excluído com sucesso!')
         return super().delete(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-
 
 # ==============================FERIAS===================================
 
 
-class FeriasCreateView(CreateView):
+class FeriasCreateView(LoginRequiredMixin, CreateView):
     model = Ferias
     template_name = 'ferias_create.html'
     form_class = FeriasForm
@@ -287,26 +213,16 @@ class FeriasCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, 'Férias registradas com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class FeriasListView(ListView):
+class FeriasListView(LoginRequiredMixin, ListView):
     model = Ferias
     template_name = 'ferias_list.html'
     context_object_name = 'ferias'
     ordering = ['nome']
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class FeriasUpdateView(UpdateView):
+class FeriasUpdateView(LoginRequiredMixin, UpdateView):
     model = Ferias
     template_name = 'ferias_update.html'
     form_class = FeriasForm
@@ -315,14 +231,9 @@ class FeriasUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Férias atualizadas com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class FeriasDeleteView(DeleteView):
+class FeriasDeleteView(LoginRequiredMixin, DeleteView):
     model = Ferias
     template_name = 'ferias_confirm_delete.html'
     success_url = reverse_lazy('ferias-list')
@@ -330,58 +241,44 @@ class FeriasDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Férias excluídas com sucesso!')
         return super().delete(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
-#============================CUSTO PARCEIROS===================================  
-class CustoParceirosCreateView(CreateView):
+
+# ============================CUSTO PARCEIROS===================================
+
+
+class CustoParceirosCreateView(LoginRequiredMixin, CreateView):
     model = CustoParceiros
     template_name = 'custoparceiros_create.html'
-    fields = ['nome', 'hora_tecnica', 'hora_adcional', 'remanejamento', 'instalacao_1_catraca', 'instalacao_2_catracas', 'desmobilizacao']
+    fields = ['nome', 'hora_tecnica', 'hora_adcional', 'remanejamento',
+              'instalacao_1_catraca', 'instalacao_2_catracas', 'desmobilizacao']
     success_url = reverse_lazy('custoparceiros-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Custo Parceiro registrado com sucesso!')
+        messages.success(
+            self.request, 'Custo Parceiro registrado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class CustoParceirosListView(ListView):
+class CustoParceirosListView(LoginRequiredMixin, ListView):
     model = CustoParceiros
     template_name = 'custoparceiros_list.html'
     context_object_name = 'custos'
     ordering = ['-id']
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class CustoParceirosUpdateView(UpdateView):
+class CustoParceirosUpdateView(LoginRequiredMixin, UpdateView):
     model = CustoParceiros
     template_name = 'custoparceiros_update.html'
-    fields = ['nome', 'hora_tecnica', 'hora_adcional', 'remanejamento', 'instalacao_1_catraca', 'instalacao_2_catracas', 'desmobilizacao']
+    fields = ['nome', 'hora_tecnica', 'hora_adcional', 'remanejamento',
+              'instalacao_1_catraca', 'instalacao_2_catracas', 'desmobilizacao']
     success_url = reverse_lazy('custoparceiros-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Custo Parceiro atualizado com sucesso!')
+        messages.success(
+            self.request, 'Custo Parceiro atualizado com sucesso!')
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
 
 
-class CustoParceirosDeleteView(DeleteView):
+class CustoParceirosDeleteView(LoginRequiredMixin, DeleteView):
     model = CustoParceiros
     template_name = 'custoparceiros_confirm_delete.html'
     success_url = reverse_lazy('custoparceiros-list')
@@ -389,12 +286,3 @@ class CustoParceirosDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Custo Parceiro excluído com sucesso!')
         return super().delete(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logado'):
-            messages.success(self.request, 'Necessário estar logado para acessar esta página.')
-            return redirect('usuario_login')
-        return super().dispatch(request, *args, **kwargs)
-    
-    
-
