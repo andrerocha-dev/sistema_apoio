@@ -4,6 +4,7 @@ python manage.py createsupereuser
 django-admin startproject 
 python manage.py startapp
 pip install -r .\requirements.txt
+pip freeze > requirements.txt
 
 ########## Gerenciamento de Contêineres docker ##############
 
